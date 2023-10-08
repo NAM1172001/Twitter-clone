@@ -61,5 +61,44 @@ export const USERS_MESSAGES = {
   CHANGE_PASSWORD_SUCCESS: 'Change password success',
   GMAIL_NOT_VERIFIED: 'Gmail not verified',
   UPLOAD_IMAGE_SUCCESS: 'Upload image success',
-  UPLOAD_VIDEO_SUCCESS: 'Upload video success'
+  UPLOAD_VIDEO_SUCCESS: 'Upload video success',
+  REFRESH_TOKEN_SUCCESS: 'Refresh token success',
+  GET_VIDEO_STATUS_SUCCESS: 'Get video status success'
+} as const
+
+export const TWEETS_MESSAGES = {
+  INVALID_TYPE: 'Type is invalid',
+  INVALID_AUDIENCE: 'Audience is invalid',
+  PARENT_ID_MUST_BE_A_VALID_TWEET_ID: 'Parent id must be a valid tweet id',
+  PARENT_ID_MUST_BE_NULL: 'Parent id must be null',
+  CONTENT_MUST_BE_A_NON_EMPTY_STRING: 'Content must be a non empty string',
+  CONTENT_MUST_BE_EMPTY_STRING: 'Content must be empty string',
+  HASHTAGS_MUST_BE_AN_ARRAY_OF_STRING: 'Hashtags must be an array of string',
+  MENTIONS_MUST_BE_AN_ARRAY_OF_USER_ID: 'Mentions must be an array of user id',
+  MEDIA_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT: 'Media must be an array of media object',
+  TWEET_ID_INVALID: 'Tweet id is invalid',
+  TWEET_NOT_FOUND: 'Tweet not found',
+  TWEET_IS_NOT_PUBLIC: 'Tweet is not public'
+} as const
+
+export const BOOKMARKS_MESSAGES = {
+  BOOKMARK_SUCCESSFULLY: 'Bookmark successfully',
+  UNBOOKMARK_SUCCESSFULLY: 'Unbookmark successfully'
+} as const
+
+export const LIKES_MESSAGES = {
+  LIKE_SUCCESSFULLY: 'Like successfully',
+  UNLIKE_SUCCESSFULLY: 'Unlike successfully'
+} as const
+
+export const NEWFEEDS_MESSAGES = {
+  CREATE_TWEET_SUCCESSFULLY: 'create tweet successfully',
+  GET_TWEET_SUCCESSFULLY: 'get tweet successfully',
+  GET_TWEET_CHILDREN_SUCCESSFULLY: 'get tweet children successfully',
+  GET_NEW_FEEDS_SUCCESSFULLY: 'get new feeds successfully'
+} as const
+
+export const SEARCH_MESSAGES = {
+  CONTENT_MUST_BE_A_STRING: 'Content must be a string',
+  PEOPLE_FOLLOW_MUST_BE_0_OR_1: 'People follow must be 0 or 1'
 } as const

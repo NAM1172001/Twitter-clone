@@ -1,5 +1,9 @@
 node_modules/
-.env
 dist/
+.env
+.env.development
+.env.production
+.env.staging
 uploads/
+.DS_Store
 

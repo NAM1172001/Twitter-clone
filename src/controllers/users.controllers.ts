@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import { ObjectId } from 'mongodb'
+import { envConfig } from '~/constants/config'
 import { UserVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
@@ -17,7 +18,8 @@ import {
   GetProfileReqParams,
   followReqBody,
   UnfollowReqParams,
-  changePasswordReqBody
+  changePasswordReqBody,
+  RefreshTokenReqBody
 } from '~/models/requests/User.requests'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
@@ -36,7 +38,7 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
 export const oauthController = async (req: Request, res: Response) => {
   const { code } = req.query
   const result = await usersService.oauth(code as string)
-  const urlRedirect = `${process.env.CLIENT_REDIRECT_CALLBACK}?access_token=${result.access_token}&refresh_token=${result.refresh_token}&new_user=${result.newUser}&verify=${result.verify}`
+  const urlRedirect = `${envConfig.clientRedirectCallback}?access_token=${result.access_token}&refresh_token=${result.refresh_token}&new_user=${result.newUser}&verify=${result.verify}`
 
   return res.redirect(urlRedirect)
 }
@@ -45,6 +47,20 @@ export const registerController = async (req: Request<ParamsDictionary, any, Reg
   const result = await usersService.register(req.body)
   return res.json({
     message: USERS_MESSAGES.REGISTER_SUCCESS,
+    result
+  })
+}
+
+export const refreshTokenController = async (
+  req: Request<ParamsDictionary, any, RefreshTokenReqBody>,
+  res: Response
+) => {
+  const { refresh_token } = req.body
+  const { user_id, verify, exp } = req.decoded_refresh_token as TokenPayload
+  const result = await usersService.refreshToken({ user_id, verify, refresh_token, exp })
+
+  return res.json({
+    message: USERS_MESSAGES.REFRESH_TOKEN_SUCCESS,
     result
   })
 }
@@ -85,7 +101,7 @@ export const resendVerifyEmailController = async (req: Request, res: Response) =
     return res.json({ message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE })
   }
 
-  const result = await usersService.resendVerifyEmail(user_id)
+  const result = await usersService.resendVerifyEmail(user_id, user.email)
   return res.json(result)
 }
 
@@ -93,8 +109,8 @@ export const forgotPasswordController = async (
   req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
   res: Response
 ) => {
-  const { _id, verify } = req.user as User
-  const result = await usersService.forgotPassword({ user_id: (_id as ObjectId).toString(), verify })
+  const { _id, verify, email } = req.user as User
+  const result = await usersService.forgotPassword({ user_id: (_id as ObjectId).toString(), verify, email })
   return res.json(result)
 }
 
