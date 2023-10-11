@@ -6,7 +6,7 @@ import searchService from '~/services/search.services'
 export const searchController = async (req: Request<ParamsDictionary, any, any, SearchQuery>, res: Response) => {
   const limit = Number(req.query.limit)
   const page = Number(req.query.page)
-  console.log(req.query)
+
   const result = await searchService.search({
     limit,
     page,
@@ -15,8 +15,8 @@ export const searchController = async (req: Request<ParamsDictionary, any, any, 
     people_follow: req.query.people_follow,
     user_id: req.decoded_authorization?.user_id as string
   })
-  // console.log('result', result)
-  res.json({
+
+  return res.json({
     message: 'SEARCH_SUCCESSFULLY',
     result: {
       tweets: result.tweets,
